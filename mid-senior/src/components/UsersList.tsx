@@ -18,21 +18,9 @@ export function UsersList({
       <thead>
         <tr>
           <th>Picture</th>
-          <th className="pointer" onClick={() => handleChangeSort(SortBy.NAME)}>
-            Name
-          </th>
-          <th
-            className="pointer"
-            onClick={() => handleChangeSort(SortBy.SURNAME)}
-          >
-            Surname
-          </th>
-          <th
-            className="pointer"
-            onClick={() => handleChangeSort(SortBy.COUNTRY)}
-          >
-            Country
-          </th>
+          <th onClick={() => handleChangeSort(SortBy.NAME)}>Name</th>
+          <th onClick={() => handleChangeSort(SortBy.SURNAME)}>Surname</th>
+          <th onClick={() => handleChangeSort(SortBy.COUNTRY)}>Country</th>
           <th>Actions</th>
         </tr>
       </thead>

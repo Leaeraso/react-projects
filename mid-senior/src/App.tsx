@@ -1,15 +1,16 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import "./App.css";
 import { SortBy, User } from "./types.d";
 import { UsersList } from "./components/UsersList";
+import { useUsers } from "./hooks/useUsers";
 
 function App() {
-  const [users, setUsers] = useState<User[]>([]);
+  const { isLoading, isError, users, refetch, fetchNextPage, hasNextPage } =
+    useUsers();
+
   const [showColors, setShowColors] = useState(false);
   const [sorting, setSorting] = useState<SortBy>(SortBy.NONE);
   const [filterCountry, setFilterCountry] = useState<string | null>(null);
-
-  const originalUsers = useRef<User[]>([]);
 
   const filteredUsers = useMemo(() => {
     return typeof filterCountry === "string" && filterCountry.length > 0
@@ -35,23 +36,6 @@ function App() {
       const extractProperty = compareProperties[sorting];
       return extractProperty(a).localeCompare(extractProperty(b));
     });
-
-    // switch (sorting) {
-    //   case SortBy.NAME:
-    //     return filteredUsers.toSorted((a, b) => {
-    //       return a.name.first.localeCompare(b.name.first);
-    //     });
-    //   case SortBy.SURNAME:
-    //     return filteredUsers.toSorted((a, b) => {
-    //       return a.name.last.localeCompare(b.name.last);
-    //     });
-    //   case SortBy.COUNTRY:
-    //     return filteredUsers.toSorted((a, b) => {
-    //       return a.location.country.localeCompare(b.location.country);
-    //     });
-    //   default:
-    //     return filteredUsers;
-    // }
   }, [filteredUsers, sorting]);
 
   const toggleColors = () => {
@@ -65,27 +49,17 @@ function App() {
   };
 
   const handleDelete = (email: string) => {
-    const filteredUsers = users.filter((user) => user.email !== email);
-    setUsers(filteredUsers);
+    // const filteredUsers = users.filter((user) => user.email !== email);
+    // setUsers(filteredUsers);
   };
 
-  const handleReset = () => {
-    setUsers(originalUsers.current);
+  const handleReset = async () => {
+    await refetch();
   };
 
   const handleChangeSort = (sort: SortBy) => {
     setSorting(sort);
   };
-
-  useEffect(() => {
-    fetch(`https://randomuser.me/api?results=100`)
-      .then((res) => res.json())
-      .then((data) => {
-        setUsers(data.results);
-        originalUsers.current = data.results;
-      })
-      .catch((err) => console.error(err));
-  }, []);
 
   return (
     <div>
@@ -106,12 +80,24 @@ function App() {
       </header>
 
       <main>
-        <UsersList
-          deleteUser={handleDelete}
-          users={sortedUsers}
-          showColors={showColors}
-          handleChangeSort={handleChangeSort}
-        />
+        {users.length > 0 && (
+          <UsersList
+            deleteUser={handleDelete}
+            users={sortedUsers}
+            showColors={showColors}
+            handleChangeSort={handleChangeSort}
+          />
+        )}
+
+        {isLoading && <p>Loading...</p>}
+
+        {isError && <p>Something went wrong</p>}
+
+        {!isLoading && !isError && users.length === 0 && <p>No users found</p>}
+
+        {!isLoading && !isError && hasNextPage && (
+          <button onClick={() => fetchNextPage()}>Load more</button>
+        )}
       </main>
     </div>
   );
