@@ -22,12 +22,38 @@ function App() {
   }, [users, filterCountry]);
 
   const sortedUsers = useMemo(() => {
-    return sorting === SortBy.COUNTRY
-      ? filteredUsers.toSorted((a, b) => {
-          return a.location.country.localeCompare(b.location.country);
-        })
-      : filteredUsers;
+    if (sorting === SortBy.NONE) return filteredUsers;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const compareProperties: Record<string, (user: User) => any> = {
+      [SortBy.NAME]: (user) => user.name.first,
+      [SortBy.SURNAME]: (user) => user.name.last,
+      [SortBy.COUNTRY]: (user) => user.location.country,
+    };
+
+    return filteredUsers.toSorted((a, b) => {
+      const extractProperty = compareProperties[sorting];
+      return extractProperty(a).localeCompare(extractProperty(b));
+    });
+
+    // switch (sorting) {
+    //   case SortBy.NAME:
+    //     return filteredUsers.toSorted((a, b) => {
+    //       return a.name.first.localeCompare(b.name.first);
+    //     });
+    //   case SortBy.SURNAME:
+    //     return filteredUsers.toSorted((a, b) => {
+    //       return a.name.last.localeCompare(b.name.last);
+    //     });
+    //   case SortBy.COUNTRY:
+    //     return filteredUsers.toSorted((a, b) => {
+    //       return a.location.country.localeCompare(b.location.country);
+    //     });
+    //   default:
+    //     return filteredUsers;
+    // }
   }, [filteredUsers, sorting]);
+
   const toggleColors = () => {
     setShowColors(!showColors);
   };
@@ -45,6 +71,10 @@ function App() {
 
   const handleReset = () => {
     setUsers(originalUsers.current);
+  };
+
+  const handleChangeSort = (sort: SortBy) => {
+    setSorting(sort);
   };
 
   useEffect(() => {
@@ -80,6 +110,7 @@ function App() {
           deleteUser={handleDelete}
           users={sortedUsers}
           showColors={showColors}
+          handleChangeSort={handleChangeSort}
         />
       </main>
     </div>
