@@ -50,7 +50,7 @@ function App() {
 
   const handleDelete = (email: string) => {
     // const filteredUsers = users.filter((user) => user.email !== email);
-    // setUsers(filteredUsers);
+    // return [...users, ...filteredUsers];
   };
 
   const handleReset = async () => {
