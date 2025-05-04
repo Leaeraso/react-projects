@@ -17,13 +17,21 @@ Cada proyecto está en su propia carpeta y tiene un enfoque distinto, desde desa
 3. 🧪 **Prueba Técnica**  
    Resolución de una prueba técnica con enfoque en lógica, componentes reutilizables y estructura limpia.
 
+4. 🛠️ **Redux Toolkit**
+   Proyecto para aprender a manejar estados globales de manera limpia y eficiente utilizando `Redux Toolkit`.
+
+5. 💻 **Prueba técnica mid-senior**
+   Resolución de una prueba técnica mid-senior donde utilice `tanstank/react-query` para manejar el estado de mi aplicacion.
+
+6. ❔ **JavaScript Quizz**
+   Proyecto donde aprendi a utilizar `Zustand` para manejar mis estados de manera limpia y sencilla.
 ---
 
 ## 🔧 En progreso
 
-Actualmente estoy trabajando en un nuevo proyecto con **React + TypeScript + Redux-Toolkit**, enfocado en mejorar la arquitectura y la gestión del estado global de forma más eficiente y moderna.
+Actualmente estoy aprendiendo a utilizar **NextJS + TypeScript**, enfocado en mejorar y construir proyectos más solidos y limpios con una estructura predefinida.
 
-➡️ El objetivo es simular una aplicación real donde se puedan administrar usuarios y sincronizar con una base de datos.
+➡️ El objetivo es construir el frontend de una API para gestionar un gimnasio, siguiendo buenas prácticas y logrando una buena experiencia de usuario.
 
 ¡Seguime para más actualizaciones y mejoras!
 
